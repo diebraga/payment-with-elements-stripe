@@ -1,11 +1,6 @@
 import { useState } from 'react'
-
-import CustomDonationInput from '../components/CustomDonationInput'
 import PrintObject from '../components/PrintObject'
-
 import { fetchPostJSON } from '../utils/api-helpers'
-import { formatAmountForDisplay } from '../utils/stripe-helpers'
-import * as config from '../config'
 
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 
@@ -35,7 +30,7 @@ const CARD_OPTIONS = {
 
 const ElementsForm = () => {
   const [input, setInput] = useState({
-    customDonation: Math.round(config.MAX_AMOUNT / config.AMOUNT_STEP),
+    valorDoIngresso: 80,
     cardholderName: '',
   })
 
@@ -84,7 +79,7 @@ const ElementsForm = () => {
 
     // Create a PaymentIntent with the specified amount.
     const response = await fetchPostJSON('/api/payment_intents', {
-      amount: input.customDonation,
+      amount: input.valorDoIngresso,
     })
     setPayment(response)
 
@@ -121,18 +116,9 @@ const ElementsForm = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <CustomDonationInput
-          className="elements-style"
-          name="customDonation"
-          value={input.customDonation}
-          min={config.MIN_AMOUNT}
-          max={config.MAX_AMOUNT}
-          step={config.AMOUNT_STEP}
-          currency={config.CURRENCY}
-          onChange={handleInputChange}
-        />
         <fieldset className="elements-style">
           <legend>Detalhes de pagamento:</legend>
+          <h1>Valor do ingresso: 80 R$</h1>
           <input
             placeholder="Nome no cartao"
             className="elements-style"
@@ -161,7 +147,7 @@ const ElementsForm = () => {
             !stripe
           }
         >
-          Donate {formatAmountForDisplay(input.customDonation, config.CURRENCY)}
+          Pagar {input.valorDoIngresso} R$
         </button>
       </form>
       <PaymentStatus status={payment.status} />

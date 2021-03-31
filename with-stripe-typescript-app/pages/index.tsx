@@ -10,7 +10,7 @@ const DonatePage: NextPage = () => {
   return (
     <Layout title="Donate with Elements | Next.js + TypeScript Example">
       <div className="page-container">
-        <h1>Pagamento com Elements</h1>
+        <h1>Pagamento ingresso na plataforma</h1>
         <Elements stripe={getStripe()}>
           <ElementsForm />
         </Elements>
