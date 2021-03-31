@@ -38,6 +38,7 @@ const ElementsForm = () => {
     customDonation: Math.round(config.MAX_AMOUNT / config.AMOUNT_STEP),
     cardholderName: '',
   })
+
   const [payment, setPayment] = useState({ status: 'initial' })
   const [errorMessage, setErrorMessage] = useState('')
   const stripe = useStripe()
@@ -131,9 +132,9 @@ const ElementsForm = () => {
           onChange={handleInputChange}
         />
         <fieldset className="elements-style">
-          <legend>Your payment details:</legend>
+          <legend>Detalhes de pagamento:</legend>
           <input
-            placeholder="Cardholder name"
+            placeholder="Nome no cartao"
             className="elements-style"
             type="Text"
             name="cardholderName"
