@@ -110,7 +110,36 @@ const ElementsForm = () => {
 
     if (error) {
       setPayment({ status: 'error' })
-      setErrorMessage(error.message ?? 'An unknown error occured')
+      setErrorMessage('Porfaor tente novamente')
+      console.log(error)
+    } else if (paymentIntent) {
+      setPayment(paymentIntent)
+    }
+
+    if (error?.code === "incomplete_zip") {
+      setPayment({ status: 'error' })
+      setErrorMessage("Seu codigo postal esta incompleto.")
+    } else if (paymentIntent) {
+      setPayment(paymentIntent)
+    }
+
+    if (error?.code === "incomplete_cvc") {
+      setPayment({ status: 'error' })
+      setErrorMessage("Seu codigo de seguranca esta incompleto.")
+    } else if (paymentIntent) {
+      setPayment(paymentIntent)
+    }
+
+    if (error?.code === "incomplete_expiry") {
+      setPayment({ status: 'error' })
+      setErrorMessage("Seu codigo de expiração esta incompleto")
+    } else if (paymentIntent) {
+      setPayment(paymentIntent)
+    }
+
+    if (error?.code === "invalid_number") {
+      setPayment({ status: 'error' })
+      setErrorMessage("Numero de cartao invalido")
     } else if (paymentIntent) {
       setPayment(paymentIntent)
     }
@@ -136,7 +165,6 @@ const ElementsForm = () => {
               onChange={(e) => {
                 if (e.error) {
                   setPayment({ status: 'error' })
-                  setErrorMessage(e.error.message ?? 'An unknown error occured')
                 }
               }}
             />
@@ -150,7 +178,7 @@ const ElementsForm = () => {
             !stripe
           }
         >
-          Donate {formatAmountForDisplay(input.valorDoIngresso, config.CURRENCY)}
+          Pague {formatAmountForDisplay(input.valorDoIngresso, config.CURRENCY)}
         </button>
       </form>
       <PaymentStatus status={payment.status} />
