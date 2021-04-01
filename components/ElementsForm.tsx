@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import PrintObject from '../components/PrintObject'
+
 import { fetchPostJSON } from '../utils/api-helpers'
+import { formatAmountForDisplay } from '../utils/stripe-helpers'
+import * as config from '../config'
 
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 
@@ -30,7 +33,7 @@ const CARD_OPTIONS = {
 
 const ElementsForm = () => {
   const [input, setInput] = useState({
-    valorDoIngresso: 80,
+    valorDoIngresso: 90,
     cardholderName: '',
   })
 
@@ -44,18 +47,18 @@ const ElementsForm = () => {
       case 'processing':
       case 'requires_payment_method':
       case 'requires_confirmation':
-        return <h2>Processing...</h2>
+        return <h2>Processando pagamento...</h2>
 
       case 'requires_action':
-        return <h2>Authenticating...</h2>
+        return <h2>Autenticando...</h2>
 
       case 'succeeded':
-        return <h2>Payment Succeeded 🥳</h2>
+        return <h2>Pagamento efetuado com sucesso! 🥳</h2>
 
       case 'error':
         return (
           <>
-            <h2>Error 😭</h2>
+            <h2>Erro ao fazer pagamento 😭</h2>
             <p className="error-message">{errorMessage}</p>
           </>
         )
@@ -118,7 +121,7 @@ const ElementsForm = () => {
       <form onSubmit={handleSubmit}>
         <fieldset className="elements-style">
           <legend>Detalhes de pagamento:</legend>
-          <h1>Valor do ingresso: 80 R$</h1>
+          <h1>Valor ingresso 90 RS</h1>
           <input
             placeholder="Nome no cartao"
             className="elements-style"
@@ -147,7 +150,7 @@ const ElementsForm = () => {
             !stripe
           }
         >
-          Pagar {input.valorDoIngresso} R$
+          Donate {formatAmountForDisplay(input.valorDoIngresso, config.CURRENCY)}
         </button>
       </form>
       <PaymentStatus status={payment.status} />
